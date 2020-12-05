@@ -3,13 +3,13 @@
     <h1>
       <button @click="parge">Parge</button>
       MyTodos
-      <span class="info">({{ remaining.length }} / {{todos.length }})</span>
+      <span class="info">({{ remaining.length }} / {{ todos.length }})</span>
     </h1>
     <ul v-if="todos.length">
       <li v-for="(todo, index) in todos">
-        <input type="checkbox" v-model="todo.isDone">
-         <span :class="{done: todo.isDone}">{{ todo.title }}</span>
-         <span @click="deleteItem(index)" class="command">[x]</span>
+        <input type="checkbox" v-model="todo.isDone" />
+        <span :class="{ done: todo.isDone }">{{ todo.title }}</span>
+        <span @click="deleteItem(index)" class="command">[x]</span>
       </li>
       <li v-show="!todos.length">Nothing to do, yay!</li>
     </ul>
@@ -17,75 +17,71 @@
       <li>Nothing to do, yay!</li>
     </ul>
     <form @submit.prevent="addItem">
-      <input type="text" v-model="newItem">
-      <input type="submit" value="Add" class="command">
+      <input type="text" v-model="newItem" />
+      <input type="submit" value="Add" class="command" />
     </form>
   </div>
 </template>
 <script>
 export default {
-  data: function(){
+  data: function () {
     return {
-      newItem: '',
-      todos: []
-    }
+      newItem: "",
+      todos: [],
+    };
   },
   watch: {
     todos: {
-      handler: function() {
-        localStorage.setItem('todos', JSON.stringify(this.todos));
+      handler: function () {
+        localStorage.setItem("todos", JSON.stringify(this.todos));
         // alert('Data saved!');
       },
-      deep: true
-    }  
+      deep: true,
+    },
   },
   methods: {
-    addItem: function() {
+    addItem: function () {
       var item = {
         title: this.newItem,
-        isDone: false
+        isDone: false,
       };
       this.todos.push(item);
-      this.newItem = '';
+      this.newItem = "";
     },
-    deleteItem: function(index) {
-      if (confirm('are you sure?')) {
-        this.todos.splice(index, 1);
-      }
+    deleteItem: function (index) {
+      this.todos.splice(index, 1);
     },
-    parge: function(){
-      if (!confirm('delete finished?')) {
+    parge: function () {
+      if (!confirm("delete finished?")) {
         return;
       }
       this.todos = this.remaining;
-      
-    }
+    },
   },
-  mounted: function() {
-    this.todos = JSON.parse(localStorage.getItem('todos')) || [];
+  mounted: function () {
+    this.todos = JSON.parse(localStorage.getItem("todos")) || [];
   },
   computed: {
-    remaining: function() {
-      return this.todos.filter(function(todo) {
+    remaining: function () {
+      return this.todos.filter(function (todo) {
         return !todo.isDone;
       });
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>
-
 .container {
   width: 300px;
   margin: auto;
 }
 
 #app h1 {
-  font-size:16px;
+  font-size: 16px;
   border-bottom: 1px solid #ddd;
   padding: 16px 0;
-  }
+}
 
 #app li {
   line-height: 1.5;
@@ -97,7 +93,7 @@ export default {
 
 #app input[type="submit"] {
   font-size: 13px;
-  margin-left:3px;
+  margin-left: 3px;
 }
 
 .command {
@@ -107,7 +103,7 @@ export default {
 }
 
 #app ul {
-  padding:0px;
+  padding: 0px;
   list-style: none;
 }
 
